@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from app import db
 from app.models.audit import Audit
 from app.models.company import Company
+from app.models.finding import Finding
+from app.models.action_plan import ActionPlan
 from app.utils.auth import jwt_required
 
 bp = Blueprint('audits', __name__)
@@ -35,6 +37,19 @@ def create_audit():
 def get_audit(audit_id):
     a = Audit.query.get_or_404(audit_id)
     return jsonify({'audit': a.to_dict()})
+
+
+@bp.route('/<int:audit_id>/detail', methods=['GET'])
+@jwt_required
+def get_audit_detail(audit_id):
+    a = Audit.query.get_or_404(audit_id)
+    findings = Finding.query.filter_by(audit_id=audit_id).order_by(Finding.created_at.desc()).all()
+    action_plans = ActionPlan.query.join(Finding).filter(Finding.audit_id == audit_id).all()
+    return jsonify({
+        'audit': a.to_dict(),
+        'findings': [f.to_dict() for f in findings],
+        'action_plans': [ap.to_dict() for ap in action_plans],
+    })
 
 
 @bp.route('/<int:audit_id>', methods=['PUT', 'PATCH'])

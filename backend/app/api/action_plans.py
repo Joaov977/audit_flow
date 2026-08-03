@@ -48,6 +48,17 @@ def get_action_plan(ap_id):
     return jsonify({'action_plan': a.to_dict()})
 
 
+@bp.route('/<int:ap_id>/detail', methods=['GET'])
+@jwt_required
+def get_action_plan_detail(ap_id):
+    a = ActionPlan.query.get_or_404(ap_id)
+    finding = Finding.query.get(a.finding_id)
+    return jsonify({
+        'action_plan': a.to_dict(),
+        'finding': finding.to_dict() if finding else None,
+    })
+
+
 @bp.route('/<int:ap_id>', methods=['PUT', 'PATCH'])
 @jwt_required
 def update_action_plan(ap_id):

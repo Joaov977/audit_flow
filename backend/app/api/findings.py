@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app import db
 from app.models.finding import Finding
 from app.models.audit import Audit
+from app.models.action_plan import ActionPlan
 from app.utils.auth import jwt_required
 
 bp = Blueprint('findings', __name__)
@@ -52,6 +53,17 @@ def create_finding():
 def get_finding(finding_id):
     f = Finding.query.get_or_404(finding_id)
     return jsonify({'finding': f.to_dict()})
+
+
+@bp.route('/<int:finding_id>/detail', methods=['GET'])
+@jwt_required
+def get_finding_detail(finding_id):
+    f = Finding.query.get_or_404(finding_id)
+    action_plans = ActionPlan.query.filter_by(finding_id=finding_id).order_by(ActionPlan.created_at.desc()).all()
+    return jsonify({
+        'finding': f.to_dict(),
+        'action_plans': [ap.to_dict() for ap in action_plans],
+    })
 
 
 @bp.route('/<int:finding_id>', methods=['PUT', 'PATCH'])

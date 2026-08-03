@@ -1,3 +1,4 @@
+import json
 from functools import wraps
 from flask import request, jsonify, g
 from app.utils.jwt_utils import decode_token
@@ -18,7 +19,17 @@ def jwt_required(func):
             return jsonify({'error': 'invalid_or_expired_token'}), 401
 
         identity = payload.get('sub') or {}
-        user_id = identity.get('user_id')
+        if isinstance(identity, str):
+            try:
+                identity = json.loads(identity)
+            except Exception:
+                identity = identity
+
+        if isinstance(identity, dict):
+            user_id = identity.get('user_id')
+        else:
+            user_id = identity
+
         if not user_id:
             return jsonify({'error': 'invalid_token_payload'}), 401
 
