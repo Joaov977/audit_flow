@@ -31,6 +31,7 @@ export default function Dashboard() {
 
   const totals = metrics?.totals || {}
   const auditBreakdown = metrics?.status_breakdown?.audits || {}
+  const operational = metrics?.operational || {}
 
   return (
     <div style={{ padding: 24 }}>
@@ -56,13 +57,23 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{ marginTop: 24, background: '#fff', borderRadius: 12, padding: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-        <h3 style={{ marginTop: 0 }}>Status das auditorias</h3>
-        <ul>
-          <li>Planejadas: {auditBreakdown.planned ?? 0}</li>
-          <li>Em andamento: {auditBreakdown.in_progress ?? 0}</li>
-          <li>Concluídas: {auditBreakdown.completed ?? 0}</li>
-        </ul>
+      <div style={{ marginTop: 24, display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+        <div style={{ background: '#fff', borderRadius: 12, padding: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ marginTop: 0 }}>Status das auditorias</h3>
+          <ul>
+            <li>Planejadas: {auditBreakdown.planned ?? 0}</li>
+            <li>Em andamento: {auditBreakdown.in_progress ?? 0}</li>
+            <li>Concluídas: {auditBreakdown.completed ?? 0}</li>
+          </ul>
+        </div>
+
+        <div style={{ background: '#fff', borderRadius: 12, padding: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ marginTop: 0 }}>Operação</h3>
+          <ul>
+            <li>Achados abertos: {operational.open_findings ?? 0}</li>
+            <li>Planos de ação vencidos: {operational.overdue_action_plans ?? 0}</li>
+          </ul>
+        </div>
       </div>
     </div>
   )

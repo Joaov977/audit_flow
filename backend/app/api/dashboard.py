@@ -1,3 +1,5 @@
+from datetime import date
+
 from flask import Blueprint, jsonify
 from app import db
 from app.models.company import Company
@@ -29,5 +31,13 @@ def dashboard_metrics():
                 'in_progress': Audit.query.filter_by(status='in_progress').count(),
                 'completed': Audit.query.filter_by(status='completed').count(),
             }
+        },
+        'operational': {
+            'open_findings': Finding.query.filter_by(status='open').count(),
+            'overdue_action_plans': ActionPlan.query.filter(
+                ActionPlan.status == 'open',
+                ActionPlan.due_date.isnot(None),
+                ActionPlan.due_date < date.today()
+            ).count(),
         }
     })
