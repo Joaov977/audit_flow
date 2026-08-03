@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../../services/api'
 
 export default function ActionPlansList(){
@@ -69,6 +70,9 @@ export default function ActionPlansList(){
             </div>
             <div style={{marginTop:8, color:'#6b7280'}}>Achado: {a.finding_id}</div>
             <div style={{marginTop:4, color:'#6b7280'}}>Progresso: {a.progress ?? 0}%</div>
+            <div style={{marginTop:12}}>
+              <Link to={`/action-plans/${a.id}`} style={{color:'#2563eb', textDecoration:'none', fontWeight:600}}>Abrir detalhe</Link>
+            </div>
           </div>
         ))}
       </div>

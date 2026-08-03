@@ -59,3 +59,7 @@ def test_dashboard_metrics(client):
     assert data['risk']['high_severity_findings'] == 1
     assert data['execution']['open_action_plans'] == 1
     assert data['performance']['closure_rate'] == 50.0
+    assert data['executive']['critical_items'][0]['title'] == 'Finding 1'
+    assert data['executive']['at_risk_actions'][0]['title'] == 'Action 1'
+    assert data['alerts'][0]['type'] == 'overdue_action_plan'
+    assert data['alerts'][0]['priority'] == 'high'

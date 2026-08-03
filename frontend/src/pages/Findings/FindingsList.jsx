@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../../services/api'
 
 export default function FindingsList(){
@@ -74,6 +75,9 @@ export default function FindingsList(){
             </div>
             <div style={{marginTop:8, color:'#6b7280'}}>Auditoria: {f.audit_id}</div>
             <div style={{marginTop:4, color:'#6b7280'}}>Severidade: {f.severity || '—'}</div>
+            <div style={{marginTop:12}}>
+              <Link to={`/findings/${f.id}`} style={{color:'#2563eb', textDecoration:'none', fontWeight:600}}>Abrir detalhe</Link>
+            </div>
           </div>
         ))}
       </div>
