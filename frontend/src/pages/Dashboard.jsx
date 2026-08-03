@@ -32,6 +32,9 @@ export default function Dashboard() {
   const totals = metrics?.totals || {}
   const auditBreakdown = metrics?.status_breakdown?.audits || {}
   const operational = metrics?.operational || {}
+  const risk = metrics?.risk || {}
+  const execution = metrics?.execution || {}
+  const performance = metrics?.performance || {}
 
   return (
     <div style={{ padding: 24 }}>
@@ -72,6 +75,27 @@ export default function Dashboard() {
           <ul>
             <li>Achados abertos: {operational.open_findings ?? 0}</li>
             <li>Planos de ação vencidos: {operational.overdue_action_plans ?? 0}</li>
+          </ul>
+        </div>
+
+        <div style={{ background: '#fff', borderRadius: 12, padding: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ marginTop: 0 }}>Risco</h3>
+          <ul>
+            <li>Achados de alta severidade: {risk.high_severity_findings ?? 0}</li>
+          </ul>
+        </div>
+
+        <div style={{ background: '#fff', borderRadius: 12, padding: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ marginTop: 0 }}>Execução</h3>
+          <ul>
+            <li>Planos de ação abertos: {execution.open_action_plans ?? 0}</li>
+          </ul>
+        </div>
+
+        <div style={{ background: '#fff', borderRadius: 12, padding: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ marginTop: 0 }}>Performance</h3>
+          <ul>
+            <li>Taxa de fechamento: {performance.closure_rate ?? 0}%</li>
           </ul>
         </div>
       </div>

@@ -17,6 +17,11 @@ def dashboard_metrics():
     audits = Audit.query.count()
     findings = Finding.query.count()
     action_plans = ActionPlan.query.count()
+    resolved_findings = Finding.query.filter_by(status='resolved').count()
+    open_action_plans = ActionPlan.query.filter_by(status='open').count()
+    high_severity_findings = Finding.query.filter_by(severity='high').count()
+
+    closure_rate = round((resolved_findings / findings * 100) if findings else 0.0, 2)
 
     return jsonify({
         'totals': {
@@ -39,5 +44,14 @@ def dashboard_metrics():
                 ActionPlan.due_date.isnot(None),
                 ActionPlan.due_date < date.today()
             ).count(),
+        },
+        'risk': {
+            'high_severity_findings': high_severity_findings,
+        },
+        'execution': {
+            'open_action_plans': open_action_plans,
+        },
+        'performance': {
+            'closure_rate': closure_rate,
         }
     })
