@@ -37,6 +37,7 @@ def create_app(config_object=None):
     from app.api import processes as processes_bp
     from app.api import audit_tests as audit_tests_bp
     from app.api import users as users_bp
+    from app.api import dashboard as dashboard_bp
 
     app.register_blueprint(auth_bp.bp, url_prefix='/api/v1/auth')
     app.register_blueprint(companies_bp.bp, url_prefix='/api/v1/companies')
@@ -46,5 +47,6 @@ def create_app(config_object=None):
     app.register_blueprint(processes_bp.bp, url_prefix='/api/v1/processes')
     app.register_blueprint(audit_tests_bp.bp, url_prefix='/api/v1/audit-tests')
     app.register_blueprint(users_bp.bp, url_prefix='/api/v1/users')
+    app.register_blueprint(dashboard_bp.bp, url_prefix='/api/v1/dashboard')
 
     return app
