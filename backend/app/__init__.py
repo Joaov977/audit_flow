@@ -8,6 +8,7 @@ migrate = Migrate()
 
 def create_app(config_object=None):
     app = Flask(__name__, static_folder=None)
+    app.url_map.strict_slashes = False
     # load default config
     app.config.from_object('app.config.Config')
 
