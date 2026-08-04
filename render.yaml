@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: audit-flow-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: python -m pip install --upgrade pip && python -m pip install -r requirements.txt && python -m pip install .
+    startCommand: gunicorn --bind 0.0.0.0:$PORT app.wsgi:app

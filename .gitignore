@@ -9,6 +9,7 @@ env/
 .pytest_cache/
 .coverage
 htmlcov/
+*.egg-info/
 
 # Node
 node_modules/
