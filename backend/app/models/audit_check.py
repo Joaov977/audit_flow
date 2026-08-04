@@ -1,9 +1,12 @@
-from app import db
 from datetime import datetime
 
-class AuditTest(db.Model):
+from app import db
+
+
+class AuditCheck(db.Model):
     __tablename__ = 'audit_tests'
     __table_args__ = {'extend_existing': True}
+
     id = db.Column(db.Integer, primary_key=True)
     audit_id = db.Column(db.Integer, db.ForeignKey('audits.id'), nullable=False)
     process_id = db.Column(db.Integer, db.ForeignKey('audit_processes.id'))
@@ -26,5 +29,5 @@ class AuditTest(db.Model):
             'evidence': self.evidence,
             'performed_by': self.performed_by,
             'performed_at': self.performed_at.isoformat() if self.performed_at else None,
-            'created_at': self.created_at.isoformat() if self.created_at else None
+            'created_at': self.created_at.isoformat() if self.created_at else None,
         }

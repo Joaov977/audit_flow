@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import db
-from app.models.audit_test import AuditTest
+from app.models.audit_check import AuditCheck
 from app.models.audit import Audit
 from app.models.audit_process import AuditProcess
 from app.utils.auth import jwt_required
@@ -13,12 +13,12 @@ bp = Blueprint('audit_tests', __name__)
 def list_tests():
     audit_id = request.args.get('audit_id')
     process_id = request.args.get('process_id')
-    q = AuditTest.query
+    q = AuditCheck.query
     if audit_id:
         q = q.filter_by(audit_id=audit_id)
     if process_id:
         q = q.filter_by(process_id=process_id)
-    items = q.order_by(AuditTest.created_at.desc()).all()
+    items = q.order_by(AuditCheck.created_at.desc()).all()
     return jsonify({'audit_tests': [t.to_dict() for t in items]})
 
 
@@ -33,7 +33,7 @@ def create_test():
     Audit.query.get_or_404(audit_id)
     if data.get('process_id'):
         AuditProcess.query.get_or_404(data.get('process_id'))
-    t = AuditTest(
+    t = AuditCheck(
         audit_id=audit_id,
         process_id=data.get('process_id'),
         title=title,
@@ -51,14 +51,14 @@ def create_test():
 @bp.route('/<int:tid>', methods=['GET'])
 @jwt_required
 def get_test(tid):
-    t = AuditTest.query.get_or_404(tid)
+    t = AuditCheck.query.get_or_404(tid)
     return jsonify({'audit_test': t.to_dict()})
 
 
 @bp.route('/<int:tid>', methods=['PUT', 'PATCH'])
 @jwt_required
 def update_test(tid):
-    t = AuditTest.query.get_or_404(tid)
+    t = AuditCheck.query.get_or_404(tid)
     data = request.get_json() or {}
     t.title = data.get('title', t.title)
     t.description = data.get('description', t.description)
@@ -73,7 +73,7 @@ def update_test(tid):
 @bp.route('/<int:tid>', methods=['DELETE'])
 @jwt_required
 def delete_test(tid):
-    t = AuditTest.query.get_or_404(tid)
+    t = AuditCheck.query.get_or_404(tid)
     db.session.delete(t)
     db.session.commit()
     return jsonify({'message': 'deleted'})
